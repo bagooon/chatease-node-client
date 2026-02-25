@@ -1,11 +1,5 @@
 // src/types.ts
 
-export type ChatEaseStatusKey =
-  | 'scheduled_for_proof'
-  | 'scheduled_for_response'
-  | 'scheduled_for_completion'
-  | 'waiting_for_reply'
-
 type ScheduledStatusKey =
   | 'scheduled_for_proof'
   | 'scheduled_for_response'
@@ -27,7 +21,7 @@ export type InitialStatus =
       /**
        * scheduled 以外は timeLimit を指定させない
        */
-      timeLimit?: never
+      timeLimit: never
     }
 
 export interface ChatEaseClientOptions {

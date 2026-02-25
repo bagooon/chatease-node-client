@@ -154,23 +154,17 @@ createBoard(params: CreateBoardBaseParams): Promise<CreateBoardResponse>
 ### `createBoardWithStatus(params)`
 
 ```ts
-type ChatEaseStatusKey =
-  | 'scheduled_for_proof'
-  | 'scheduled_for_response'
-  | 'scheduled_for_completion'
-  | 'waiting_for_reply'
-
 type InitialStatus =
   | {
       statusKey:
-        | 'scheduled_for_proof'
-        | 'scheduled_for_response'
-        | 'scheduled_for_completion'
+        | 'scheduled_for_proof'  // 校正予定
+        | 'scheduled_for_response'  // 返答予定
+        | 'scheduled_for_completion'  // 完了予定
       timeLimit: string // YYYY-MM-DD
     }
   | {
-      statusKey: 'waiting_for_reply'
-      timeLimit?: never
+      statusKey: 'waiting_for_reply'  // 返答待ち
+      timeLimit: never // 日付は指定できません
     }
 
 interface CreateBoardWithStatusParams extends CreateBoardBaseParams {
