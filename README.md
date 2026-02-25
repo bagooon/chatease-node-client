@@ -1,4 +1,4 @@
-<a href="https://chatease.jp/" target="_blank"><img width="500" height="107" alt="ChatEase" src="https://github.com/user-attachments/assets/f65e3f07-0ab8-4f41-986c-2fb121d04e12" /></a>
+<a href="https://chatease.jp/"><img width="500" height="106" alt="ChatEase logo" src="./.github/assets/chatease_logo.svg" /></a>
 
 # @bagooon/chatease-node-client
 
@@ -6,7 +6,7 @@
 [![CI](https://github.com/bagooon/chatease-node-client/actions/workflows/ci.yml/badge.svg)](https://github.com/bagooon/chatease-node-client/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Node.js 向けの **[ChatEase](https://chatease.jp "ChatEase.jp") チャットボード API クライアント** です。  
+Node.js 向けの **[ChatEase](https://chatease.jp "ChatEase.jp") チャットボード新規追加 API クライアント** です。  
 サーバーサイド（Node.js）専用で、ブラウザからの利用は想定していません。
 
 > ⚠️ This package is **Node.js-only**.  
