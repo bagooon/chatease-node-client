@@ -1,0 +1,46 @@
+{
+  "name": "@bagooon/chatease-node-client",
+  "version": "0.1.0",
+  "description": "Node.js-only client for ChatEase board API",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "prepublishOnly": "npm run test && npm run build"
+  },
+  "keywords": [
+    "chatease",
+    "chat",
+    "board",
+    "api",
+    "node"
+  ],
+  "author": "Hashimoto Giken",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "browser": {
+    "./dist/index.js": false
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "@vitest/ui": "^4.0.18",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}
