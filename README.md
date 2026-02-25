@@ -46,7 +46,7 @@ pnpm add @bagooon/chatease-node-client
 ## Quick Start
 
 ```ts
-import { ChatEaseClient } from '@hashimoto-giken/chatease-node-client'
+import { ChatEaseClient } from '@bagooon/chatease-node-client'
 
 const chatease = new ChatEaseClient({
   apiToken: process.env.CHATEASE_API_TOKEN!,
