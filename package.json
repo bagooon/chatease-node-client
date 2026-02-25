@@ -2,6 +2,14 @@
   "name": "@bagooon/chatease-node-client",
   "version": "0.1.1",
   "description": "Node.js-only client for ChatEase board API",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bagooon/chatease-node-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bagooon/chatease-node-client/issues"
+  },
+  "homepage": "https://chatease.jp/",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
