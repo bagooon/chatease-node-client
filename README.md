@@ -21,6 +21,7 @@ Node.js 向けの **[ChatEase](https://chatease.jp "ChatEase.jp") チャット�
   - チャットボード生成のみ
   - チャットボード + 初期ステータス
   - チャットボード + 初期ステータス + 初期投稿
+- ワークスペース名取得メソッド `getWorkspaceName()` を提供
 - TypeScript フルサポート（型定義同梱）
 - 実行時バリデーション
   - `timeLimit` の日付妥当性（`YYYY-MM-DD` & 実在日付）
@@ -101,6 +102,10 @@ const res3 = await chatease.createBoardWithStatusAndMessage({
     content: 'ロゴデザインについて相談したいです。現在の案を添付しました。',
   },
 })
+
+// 4) ワークスペース名を取得
+//   （APIトークン＋ワークスペーススラッグが正しく設定されているかを確認する用途に利用できます。)
+const workdpaceName = await chatease.getWorkspaceName()
 ```
 
 ---
@@ -216,6 +221,18 @@ interface CreateBoardResponse {
 - `slug` – ボードの識別子
 - `hostURL` – ホスト（管理側）用 URL
 - `guestURL` – ゲスト側 URL（メールに貼るなど）
+
+---
+
+### `getWorkspaceName()`
+
+```ts
+getWorkspaceName(): Promise<string>
+```
+
+認証には既存の API トークンヘッダー（`X-Chatease-API-Token`）と、リクエストボディの `workspaceSlug` を使用します。  
+APIトークン＋ワークスペーススラッグが正しく設定されているかを確認する用途に利用できます。
+認証に失敗した場合は、例外を投げます。
 
 ---
 

@@ -69,3 +69,7 @@ export interface CreateBoardResponse {
   hostURL: string
   guestURL: string
 }
+
+export interface WorkspaceNameResponse {
+  name: string
+}

@@ -111,6 +111,39 @@ describe('ChatEaseClient', () => {
     expect(body.initialStatus.timeLimit).toBe('2026-03-01')
   })
 
+  it('gets workspace name', async () => {
+    ;(globalThis as any).fetch = vi.fn(async () => {
+      return {
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        json: async () => ({
+          name: 'テストワークスペース',
+        }),
+        text: async () => '',
+      }
+    })
+
+    const client = new ChatEaseClient({
+      apiToken,
+      workspaceSlug,
+      baseUrl,
+    })
+
+    const name = await client.getWorkspaceName()
+
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1)
+    const [url, options] = (globalThis.fetch as any).mock.calls[0]
+
+    expect(url).toBe(`${baseUrl}/api/v1/board/name`)
+    expect(options.method).toBe('POST')
+    expect(options.headers['X-Chatease-API-Token']).toBe(apiToken)
+
+    const body = JSON.parse(options.body)
+    expect(body.workspaceSlug).toBe(workspaceSlug)
+    expect(name).toBe('テストワークスペース')
+  })
+
   it('throws on invalid email', async () => {
     const client = new ChatEaseClient({
       apiToken,
@@ -186,6 +219,28 @@ describe('ChatEaseClient', () => {
 
     await expect(client.createBoard(params)).rejects.toThrowError(
       /ChatEase API error: 400 Bad Request/
+    )
+  })
+
+  it('throws descriptive error when getWorkspaceName returns 401', async () => {
+    ;(globalThis as any).fetch = vi.fn(async () => {
+      return {
+        ok: false,
+        status: 401,
+        statusText: 'Unauthorized',
+        json: async () => ({ error: 'Unauthorized' }),
+        text: async () => '{"error":"Unauthorized"}',
+      }
+    })
+
+    const client = new ChatEaseClient({
+      apiToken,
+      workspaceSlug,
+      baseUrl,
+    })
+
+    await expect(client.getWorkspaceName()).rejects.toThrowError(
+      /ChatEase API error: 401 Unauthorized/
     )
   })
 })

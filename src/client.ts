@@ -6,6 +6,7 @@ import type {
   CreateBoardWithStatusAndMessageParams,
   CreateBoardRequestBody,
   CreateBoardResponse,
+  WorkspaceNameResponse,
 } from './types.js'
 import {
   isValidBoardUniqueKey,
@@ -59,6 +60,33 @@ export class ChatEaseClient {
     params: CreateBoardWithStatusAndMessageParams
   ): Promise<CreateBoardResponse> {
     return this._createBoard(params)
+  }
+
+  async getWorkspaceName(): Promise<string> {
+    const res = await fetch(this.buildUrl('/api/v1/board/name'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Chatease-API-Token': this.apiToken,
+      },
+      body: JSON.stringify({
+        workspaceSlug: this.workspaceSlug,
+      }),
+    })
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => '')
+      const message = [
+        `ChatEase API error: ${res.status} ${res.statusText}`,
+        text && `Body: ${text}`,
+      ]
+        .filter(Boolean)
+        .join(' - ')
+      throw new Error(message)
+    }
+
+    const json = (await res.json()) as WorkspaceNameResponse
+    return json.name
   }
 
   /**
