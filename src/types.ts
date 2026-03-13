@@ -44,6 +44,7 @@ export interface CreateBoardBaseParams {
   guest: GuestInfo
   boardUniqueKey: string
   inReplyTo?: string
+  memo?: string
 }
 
 export interface CreateBoardWithStatusParams extends CreateBoardBaseParams {

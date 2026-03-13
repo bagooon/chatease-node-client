@@ -67,6 +67,7 @@ const res1 = await chatease.createBoard({
     name: '田中太郎',
     email: 'taro@example.com',
   },
+  memo: 'TEL: 012-345-6789',
   boardUniqueKey: '20260225-1001',
 })
 
@@ -79,6 +80,7 @@ const res2 = await chatease.createBoardWithStatus({
     name: 'Suzuki Hanako',
     email: 'hanako@example.com',
   },
+  memo: 'TEL: 012-345-6789',
   boardUniqueKey: '20260225-1002',
   initialStatus: {
     statusKey: 'scheduled_for_response',
@@ -93,6 +95,7 @@ const res3 = await chatease.createBoardWithStatusAndMessage({
     name: 'John Smith',
     email: 'john@example.com',
   },
+  memo: 'TEL: 012-345-6789',
   boardUniqueKey: '20260225-1003',
   initialStatus: {
     statusKey: 'scheduled_for_proof',
@@ -143,6 +146,7 @@ interface CreateBoardBaseParams {
   guest: GuestInfo
   boardUniqueKey: string
   inReplyTo?: string
+  memo?: string
 }
 
 createBoard(params: CreateBoardBaseParams): Promise<CreateBoardResponse>
