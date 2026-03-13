@@ -1,6 +1,6 @@
 {
   "name": "@bagooon/chatease-node-client",
-  "version": "0.4.0",
+  "version": "0.3.0",
   "description": "Node.js-only client for ChatEase board API",
   "repository": {
     "type": "git",
