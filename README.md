@@ -67,6 +67,7 @@ const res1 = await chatease.createBoard({
     name: '田中太郎',
     email: 'taro@example.com',
   },
+  guestPassphrase: 'あいことば',
   memo: 'TEL: 012-345-6789',
   boardUniqueKey: '20260225-1001',
 })
@@ -145,6 +146,7 @@ interface CreateBoardBaseParams {
   title: string
   guest: GuestInfo
   boardUniqueKey: string
+  guestPassphrase?: string
   inReplyTo?: string
   memo?: string
 }
@@ -157,6 +159,8 @@ createBoard(params: CreateBoardBaseParams): Promise<CreateBoardResponse>
 - `boardUniqueKey` は同じ値で再度呼び出すと、既存ボードが返ってくる仕様です
 - `guest.email` は簡易フォーマットチェックが行われます
 - `boardUniqueKey` は空文字や空白を含む値は拒否されます
+- `guestPassphrase` は任意です。指定時はゲスト画面表示時に毎回確認されます
+- `guestPassphrase` は全角換算 10 文字以内です
 
 ---
 
@@ -240,6 +244,42 @@ APIトークン＋ワークスペーススラッグが正しく設定されて�
 
 ---
 
+## Raw Request Example
+
+クライアントを使わずに直接 `POST /api/v1/board` を呼ぶ場合の例です。
+
+```http
+POST /api/v1/board HTTP/1.1
+Host: chatease.jp
+Content-Type: application/json
+X-Chatease-API-Token: your-api-token
+
+{
+  "workspaceSlug": "your-workspace-slug",
+  "title": "お問い合わせ #1001",
+  "guest": {
+    "name": "田中太郎",
+    "email": "taro@example.com"
+  },
+  "guestPassphrase": "あいことば",
+  "memo": "TEL: 012-345-6789",
+  "boardUniqueKey": "20260225-1001",
+  "initialStatus": {
+    "statusKey": "scheduled_for_response",
+    "timeLimit": "2026-05-10"
+  },
+  "initialGuestComment": {
+    "content": "お問い合わせ内容の初回本文です。"
+  }
+}
+```
+
+- `guestPassphrase` は任意です
+- 指定時はゲスト画面表示時に毎回確認されます
+- `guestPassphrase` は全角換算 10 文字以内です
+
+---
+
 ## Validation
 
 このクライアントは、API 呼び出し前に以下の実行時チェックを行います：
@@ -250,6 +290,10 @@ APIトークン＋ワークスペーススラッグが正しく設定されて�
     - 前後の空白禁止
     - 空白文字（スペース・タブ・改行など）を含まない
     - 最大 255 文字まで
+- guestPassphrase
+    - 文字列のみ
+    - 前後空白は trim される前提
+    - 全角換算 10 文字まで
 - initialStatus.timeLimit
     - scheduled_for_* の場合は必須
     - YYYY-MM-DD 形式

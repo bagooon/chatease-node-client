@@ -82,6 +82,31 @@ describe('ChatEaseClient', () => {
     expect(res.guestURL).toContain('board-slug')
   })
 
+  it('sends guestPassphrase when provided', async () => {
+    const client = new ChatEaseClient({
+      apiToken,
+      workspaceSlug,
+      baseUrl,
+    })
+
+    const params: CreateBoardBaseParams = {
+      title: 'お問い合わせ #1',
+      guest: {
+        name: 'Taro',
+        email: 'taro@example.com',
+      },
+      boardUniqueKey: '20260225-0001-pass',
+      guestPassphrase: 'あいことば12',
+    }
+
+    await client.createBoard(params)
+
+    const [, options] = (globalThis.fetch as any).mock.calls[0]
+    const body = JSON.parse(options.body)
+
+    expect(body.guestPassphrase).toBe(params.guestPassphrase)
+  })
+
   it('creates a board with status', async () => {
     const client = new ChatEaseClient({
       apiToken,
@@ -186,6 +211,30 @@ describe('ChatEaseClient', () => {
 
     await expect(client.createBoard(params)).rejects.toThrowError(
       /boardUniqueKey is invalid/
+    )
+
+    expect(globalThis.fetch).not.toHaveBeenCalled()
+  })
+
+  it('throws on too long guestPassphrase', async () => {
+    const client = new ChatEaseClient({
+      apiToken,
+      workspaceSlug,
+      baseUrl,
+    })
+
+    const params: CreateBoardBaseParams = {
+      title: 'invalid passphrase',
+      guest: {
+        name: 'Taro',
+        email: 'taro@example.com',
+      },
+      boardUniqueKey: '20260225-0005',
+      guestPassphrase: 'あいうえおかきくけこさ',
+    }
+
+    await expect(client.createBoard(params)).rejects.toThrowError(
+      /guestPassphrase is too long/
     )
 
     expect(globalThis.fetch).not.toHaveBeenCalled()

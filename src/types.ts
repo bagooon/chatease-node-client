@@ -43,6 +43,7 @@ export interface CreateBoardBaseParams {
   title: string
   guest: GuestInfo
   boardUniqueKey: string
+  guestPassphrase?: string
   inReplyTo?: string
   memo?: string
 }

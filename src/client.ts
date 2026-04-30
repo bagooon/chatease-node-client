@@ -18,6 +18,7 @@ export class ChatEaseClient {
   private readonly apiToken: string
   private readonly workspaceSlug: string
   private readonly baseUrl: string
+  private static readonly MAX_GUEST_PASSPHRASE_WEIGHTED_LENGTH = 20
 
   constructor(options: ChatEaseClientOptions) {
     if (typeof window !== 'undefined') {
@@ -141,7 +142,7 @@ export class ChatEaseClient {
       | CreateBoardWithStatusParams
       | CreateBoardWithStatusAndMessageParams
   ): void {
-    const { guest, boardUniqueKey } = params
+    const { guest, boardUniqueKey, guestPassphrase } = params
 
     if (!guest?.email) {
       throw new Error('guest.email is required')
@@ -156,9 +157,32 @@ export class ChatEaseClient {
       )
     }
 
+    if (guestPassphrase !== undefined) {
+      if (typeof guestPassphrase !== 'string') {
+        throw new Error('guestPassphrase must be a string')
+      }
+
+      if (
+        this.getGuestPassphraseWeightedLength(guestPassphrase.trim()) >
+        ChatEaseClient.MAX_GUEST_PASSPHRASE_WEIGHTED_LENGTH
+      ) {
+        throw new Error('guestPassphrase is too long. It must be within 10 full-width characters.')
+      }
+    }
+
     if ('initialStatus' in params && params.initialStatus) {
       validateInitialStatus(params.initialStatus)
     }
+  }
+
+  private getGuestPassphraseWeightedLength(value: string): number {
+    let length = 0
+
+    for (const char of value) {
+      length += char.charCodeAt(0) <= 0xff ? 1 : 2
+    }
+
+    return length
   }
 
   private buildUrl(path: string): string {
